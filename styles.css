@@ -56,10 +56,6 @@ h1 { margin: 0 0 1rem; font-size: 1.75rem; }
   padding: 1rem;
 }
 
-.current h2 { margin: 0 0 0.5rem; font-size: 1.25rem; }
-.current .temp { font-size: 2.25rem; font-weight: 700; margin: 0.25rem 0; }
-.current p { margin: 0.25rem 0; color: var(--muted); }
-
 .loading, .error {
   display: flex;
   align-items: center;
@@ -84,6 +80,10 @@ h1 { margin: 0 0 1rem; font-size: 1.75rem; }
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
+
+.current h2 { margin: 0 0 0.5rem; font-size: 1.25rem; }
+.current .temp { font-size: 2.25rem; font-weight: 700; margin: 0.25rem 0; }
+.current p { margin: 0.25rem 0; color: var(--muted); }
 
 .forecast { margin-top: 1rem; }
 
