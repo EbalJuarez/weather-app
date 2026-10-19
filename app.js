@@ -181,6 +181,28 @@ function renderCurrent(weather, location) {
   $('humidity').textContent = `Humedad: ${weather.current.relative_humidity_2m} %`;
 }
 
+function renderForecast(daily) {
+  const list = $('forecast-list');
+  list.innerHTML = '';
+  const days = daily.time;
+  for (let i = 0; i < Math.min(3, days.length); i++) {
+    const card = document.createElement('div');
+    card.className = 'forecast-card';
+    const date = new Date(days[i] + 'T00:00:00');
+    const dayLabel = date.toLocaleDateString('es-ES', {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+    });
+    card.innerHTML = `
+      <div class="day">${dayLabel}</div>
+      <div class="range">${daily.temperature_2m_max[i]}° / ${daily.temperature_2m_min[i]}°</div>
+      <div class="cond">${weatherDescription(daily.weather_code[i])}</div>
+    `;
+    list.appendChild(card);
+  }
+}
+
 async function handleSearch(event) {
   event.preventDefault();
   const city = $('city-input').value.trim();
@@ -190,6 +212,7 @@ async function handleSearch(event) {
     const location = await geocodeCity(city);
     const weather = await fetchWeather(location.latitude, location.longitude);
     renderCurrent(weather, location);
+    renderForecast(weather.daily);
   } catch (err) {
     if (err && err.name !== 'AbortError') {
       console.error(err);

@@ -59,3 +59,26 @@ h1 { margin: 0 0 1rem; font-size: 1.75rem; }
 .current h2 { margin: 0 0 0.5rem; font-size: 1.25rem; }
 .current .temp { font-size: 2.25rem; font-weight: 700; margin: 0.25rem 0; }
 .current p { margin: 0.25rem 0; color: var(--muted); }
+
+.forecast { margin-top: 1rem; }
+
+.forecast-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+@media (min-width: 600px) {
+  .forecast-list { grid-template-columns: repeat(3, 1fr); }
+}
+
+.forecast-card {
+  background: var(--card);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.forecast-card .day { font-weight: 600; margin-bottom: 0.25rem; }
+.forecast-card .range { font-size: 1.1rem; margin: 0.25rem 0; }
+.forecast-card .cond { color: var(--muted); font-size: 0.85rem; }
