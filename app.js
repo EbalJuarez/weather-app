@@ -131,3 +131,75 @@ async function fetchWeather(lat, lon) {
     cleanup();
   }
 }
+
+const WEATHER_CODES = {
+  0: 'Despejado',
+  1: 'Principalmente despejado',
+  2: 'Parcialmente nublado',
+  3: 'Nublado',
+  45: 'Niebla',
+  48: 'Niebla con escarcha',
+  51: 'Llovizna ligera',
+  53: 'Llovizna moderada',
+  55: 'Llovizna densa',
+  56: 'Llovizna helada ligera',
+  57: 'Llovizna helada densa',
+  61: 'Lluvia ligera',
+  63: 'Lluvia moderada',
+  65: 'Lluvia fuerte',
+  66: 'Lluvia helada ligera',
+  67: 'Lluvia helada fuerte',
+  71: 'Nieve ligera',
+  73: 'Nieve moderada',
+  75: 'Nieve fuerte',
+  77: 'Granizo',
+  80: 'Chubascos ligeros',
+  81: 'Chubascos moderados',
+  82: 'Chubascos fuertes',
+  85: 'Chubascos de nieve ligeros',
+  86: 'Chubascos de nieve fuertes',
+  95: 'Tormenta',
+  96: 'Tormenta con granizo ligero',
+  99: 'Tormenta con granizo fuerte',
+};
+
+function weatherDescription(code) {
+  return WEATHER_CODES[code] || 'Condición desconocida';
+}
+
+function $(id) {
+  return document.getElementById(id);
+}
+
+function renderCurrent(weather, location) {
+  const parts = [location.name, location.admin1, location.country].filter(Boolean);
+  $('location').textContent = parts.join(', ');
+  $('temperature').textContent = `${weather.current.temperature_2m} °C`;
+  $('feels-like').textContent = `Sensación térmica: ${weather.current.apparent_temperature} °C`;
+  $('condition').textContent = weatherDescription(weather.current.weather_code);
+  $('wind').textContent = `Viento: ${weather.current.wind_speed_10m} km/h`;
+  $('humidity').textContent = `Humedad: ${weather.current.relative_humidity_2m} %`;
+}
+
+async function handleSearch(event) {
+  event.preventDefault();
+  const city = $('city-input').value.trim();
+  if (!city) return;
+  abortActiveRequest();
+  try {
+    const location = await geocodeCity(city);
+    const weather = await fetchWeather(location.latitude, location.longitude);
+    renderCurrent(weather, location);
+  } catch (err) {
+    if (err && err.name !== 'AbortError') {
+      console.error(err);
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const form = $('search-form');
+  if (form) {
+    form.addEventListener('submit', handleSearch);
+  }
+});

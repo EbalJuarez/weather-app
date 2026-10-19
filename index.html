@@ -7,6 +7,21 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <main class="app">
+    <h1>Clima</h1>
+    <form id="search-form" class="search-form">
+      <input id="city-input" type="text" placeholder="Ciudad" autocomplete="off">
+      <button type="submit">Buscar</button>
+    </form>
+    <section id="current" class="current">
+      <h2 id="location"></h2>
+      <p id="temperature" class="temp"></p>
+      <p id="feels-like"></p>
+      <p id="condition"></p>
+      <p id="wind"></p>
+      <p id="humidity"></p>
+    </section>
+  </main>
   <script src="app.js"></script>
 </body>
 </html>

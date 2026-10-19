@@ -38,8 +38,15 @@
 - Never hardcode credentials. Secrets go in `.env` (gitignored).
 - Small, focused commits; review `git diff` before each one.
 
+## Architecture
+
+- Files: `index.html` (markup), `styles.css` (mobile-first), `app.js` (API + render + events).
+- `app.js` sections: constants/error classes/AbortController helpers; `geocodeCity`, `fetchWeather`; WMO code map; DOM helpers (`setLoading`, `showError`, etc.); `renderCurrent`, `renderForecast`; `handleSearch`; init.
+- Open-Meteo: geocoding `language=es, count=1`; forecast with `current` + `daily`, `forecast_days=3`, `timezone=auto`.
+- Errors typed: `CityNotFoundError`, `HttpError`, `TimeoutError`, `NetworkError`. Timeout 8 s via `AbortController`; previous request aborted on new search.
+
 ## Agent guidance
 
-- Work in small steps: structure and API first, then UI, then forecast, then loading/error states.
+- Work in small steps; review `git diff` before each commit.
 - Do not create new files without showing the proposed structure first.
 - Update this file whenever an architecture decision is made.
