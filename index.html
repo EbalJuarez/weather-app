@@ -13,6 +13,11 @@
       <input id="city-input" type="text" placeholder="Ciudad" autocomplete="off">
       <button type="submit">Buscar</button>
     </form>
+    <div id="loading" class="loading hidden" aria-live="polite">
+      <span class="spinner" aria-hidden="true"></span>
+      Cargando…
+    </div>
+    <div id="error" class="error hidden" role="alert"></div>
     <section id="current" class="current">
       <h2 id="location"></h2>
       <p id="temperature" class="temp"></p>

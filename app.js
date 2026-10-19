@@ -203,19 +203,65 @@ function renderForecast(daily) {
   }
 }
 
+function setLoading(isLoading) {
+  const loading = $('loading');
+  const button = document.querySelector('#search-form button');
+  if (isLoading) {
+    loading.classList.remove('hidden');
+    if (button) button.disabled = true;
+  } else {
+    loading.classList.add('hidden');
+    if (button) button.disabled = false;
+  }
+}
+
+function showError(message) {
+  const el = $('error');
+  el.textContent = message;
+  el.classList.remove('hidden');
+}
+
+function clearError() {
+  const el = $('error');
+  el.textContent = '';
+  el.classList.add('hidden');
+}
+
+let currentSearchId = 0;
+
 async function handleSearch(event) {
   event.preventDefault();
+  const searchId = ++currentSearchId;
   const city = $('city-input').value.trim();
-  if (!city) return;
+  clearError();
+  if (!city) {
+    showError('Escribe una ciudad.');
+    return;
+  }
   abortActiveRequest();
+  setLoading(true);
   try {
     const location = await geocodeCity(city);
     const weather = await fetchWeather(location.latitude, location.longitude);
+    if (searchId !== currentSearchId) return;
     renderCurrent(weather, location);
     renderForecast(weather.daily);
   } catch (err) {
-    if (err && err.name !== 'AbortError') {
-      console.error(err);
+    if (searchId !== currentSearchId) return;
+    if (err instanceof CityNotFoundError) {
+      showError('Ciudad no encontrada.');
+    } else if (err instanceof HttpError) {
+      showError(`Error del servidor (HTTP ${err.status}). Intenta de nuevo.`);
+    } else if (err instanceof TimeoutError) {
+      showError('Tiempo de espera agotado. Intenta de nuevo.');
+    } else if (err && err.name === 'AbortError') {
+      // Cancelada por una búsqueda más reciente: no mostrar error.
+    } else {
+      showError('Sin conexión. Revisa tu red.');
+    }
+  } finally {
+    if (searchId === currentSearchId) {
+      setLoading(false);
     }
   }
 }

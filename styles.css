@@ -60,6 +60,31 @@ h1 { margin: 0 0 1rem; font-size: 1.75rem; }
 .current .temp { font-size: 2.25rem; font-weight: 700; margin: 0.25rem 0; }
 .current p { margin: 0.25rem 0; color: var(--muted); }
 
+.loading, .error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.loading { background: #1e293b; color: var(--muted); }
+.error { background: #3f1d1d; color: #f87171; }
+
+.hidden { display: none !important; }
+
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #334155;
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
 .forecast { margin-top: 1rem; }
 
 .forecast-list {
